@@ -11,7 +11,3 @@ odm         /odm        ext4    ro,barrier=1,discard    wait,logical,first_stage
 /dev/block/bootdevice/by-name/dtbo        /dtbo       emmc    defaults    recoveryonly
 /dev/block/bootdevice/by-name/prism       /prism      ext4    defaults    recoveryonly
 /dev/block/bootdevice/by-name/optics      /optics     ext4    defaults    recoveryonly
-
-/dev/block/mmcblk1p1  /dev/block/mmcblk1  /external_sd  vfat  nosuid,nodev  flags=display="MicroSD";storage;wipeingui;removable
-/dev/block/sda1       /dev/block/sda      /usb-otg      vfat  nosuid,nodev  flags=display="USB-OTG";storage;wipeingui;removable
-# I don't have a sdcard to test :)
