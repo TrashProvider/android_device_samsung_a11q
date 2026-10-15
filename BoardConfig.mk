@@ -105,10 +105,9 @@ TW_USE_TOOLBOX := true
 # My shit
 TW_DEVICE_VERSION := nleloc
 BOARD_USE_DYNAMIC_PARTITIONS := true
-TW_CUSTOM_BATTERY_PATH := "/sys/class/power_supply/battery"
+TW_CUSTOM_BATTERY_PATH := /sys/class/power_supply/battery
 BOARD_HAS_DOWNLOAD_MODE := true
 TARGET_RECOVERY_PROP := $(DEVICE_PATH)/recovery.prop
-TW_EXCLUDE_DEFAULT_USB_INIT := true
 
 TW_INCLUDE_TZDATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
