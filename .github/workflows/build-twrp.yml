@@ -2,6 +2,12 @@ name: Build TWRP
 
 on:
   workflow_dispatch:
+    inputs:
+      use_ccache:
+        description: 'Enable CCache'
+        required: true
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -34,6 +40,15 @@ jobs:
           curl -s https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
 
+      - name: Configure CCache
+        if: inputs.use_ccache == true
+        uses: actions/cache@v4
+        with:
+          path: .ccache
+          key: twrp-ccache-${{ github.sha }}
+          restore-keys: |
+            twrp-ccache-
+
       - name: Sync TWRP source
         run: |
           export PATH=~/bin:$PATH
@@ -54,9 +69,22 @@ jobs:
           cd twrp
           export LC_ALL=C
           export ALLOW_MISSING_DEPENDENCIES=true
+
+          if [ "${{ inputs.use_ccache }}" == "true" ]; then
+            export USE_CCACHE=1
+            export CCACHE_DIR=$GITHUB_WORKSPACE/.ccache
+            export CCACHE_EXEC=/usr/bin/ccache
+            ccache -M 10G
+            ccache -z
+          fi
+
           source build/envsetup.sh
           lunch twrp_a11q-eng
           mka recoveryimage -j$(nproc)
+
+          if [ "${{ inputs.use_ccache }}" == "true" ]; then
+            ccache -s
+          fi
 
       - name: Upload recovery.img
         uses: actions/upload-artifact@v4
